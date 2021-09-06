@@ -25,10 +25,8 @@ reset=`tput sgr0`
 #functions
 status() {
   # ginna Build menu
-  export DEVICEDIR="device/motorola/ginna"
-  export DEVICENAME=ginna
-  export SOURCESCRIPT=ginna
-  . Build_script.sh  
+dialog --title "Hello" --msgbox "$(docker exec -it node bandd status)" 60 80
+
 }
 
 delegate() {
@@ -167,7 +165,7 @@ case $CHOICE in
   # Motorola ginna build menu
   clear
   BEGIN=$(date +%s)
-  ginna
+  status
   END=$(date +%s)
   clear
 ;;
