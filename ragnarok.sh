@@ -1,7 +1,5 @@
 #!/bin/bash
-#
-# Copyright (C) 2016 BeansTown106 for PureNexus Project
-# Copyright (C) 2021 A-Team Digital Solutions
+# Copyright (C) 2021 iprouteth0 software
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -10,111 +8,60 @@
 #      http://www.apache.org/licenses/LICENSE-2.0
 #
 
-
-# Colors
-black=`tput setaf 0`
-red=`tput setaf 1`
-green=`tput setaf 2`
-yellow=`tput setaf 3`
-blue=`tput setaf 4`
-magenta=`tput setaf 5`
-cyan=`tput setaf 6`
-white=`tput setaf 7`
-reset=`tput sgr0`
-
 #functions
 status() {
   # ginna Build menu
-dialog --title "Hello" --msgbox "$(docker exec -it node bandd status)" 60 80
+dialog --title "bandd status" --msgbox "$(docker exec -it node bandd status)" 40 90
 
 }
 
 delegate() {
-  # Olivewood Build menu
-  export DEVICEDIR="device/xiaomi/olivewood"
-  export DEVICENAME=olivewood
-  export SOURCESCRIPT=olivewood
-  . Build_script.sh 
+  # delegate menu
 }
 
 undelegate() {
-  # xiaomi olivelite Build menu
-  export DEVICEDIR="device/xiaomi/olivelite"
-  export DEVICENAME=olivelite
-  export SOURCESCRIPT=olivelite
-  . Build_script.sh 
+  # undelegate menu
 }
 
 balance() {
-  # xiaomi olives cafebabe trees
-  export DEVICEDIR="device/xiaomi/olives"
-  export DEVICENAME=olives
-  export SOURCESCRIPT=cafebabe
-  . Build_script.sh 
+  # check balance
+dialog --title "Balances" --msgbox "$(docker exec -it node bandd query bank balances $WALLET)" 10 20
 }
 
 send() {
-  # samsung beyond0qlte Build menu
-  export DEVICEDIR="device/samsung/beyond0qlte"
-  export DEVICENAME=beyond0qlte
-  export SOURCESCRIPT=sm8150
-  . Build_script.sh 
+  # sending menu
 }
 
 query() {
-  # samsung beyond1qlte Build menu
-  export DEVICEDIR="device/samsung/beyond1qlte"
-  export DEVICENAME=beyond1qlte
-  export SOURCESCRIPT=sm8150
-  . Build_script.sh 
+  # query menu
 }
 
 vote() {
-  # samsung beyond2qlte Build menu
-  export DEVICEDIR="device/samsung/beyond2qlte"
-  export DEVICENAME=beyond2qlte
-  export SOURCESCRIPT=sm8150
-  . Build_script.sh 
+  # voting menu
 }
 
 unjail() {
-  # samsung d1q Build menu
-  export DEVICEDIR="device/samsung/d1q"
-  export DEVICENAME=d1q
-  export SOURCESCRIPT=sm8150
-  . Build_script.sh 
+  # quick unjail menu
 }
 
 yoda() {
-  # samsung d2q Build menu
-  export DEVICEDIR="device/samsung/d2q"
-  export DEVICENAME=d2q
-  export SOURCESCRIPT=sm8150
-  . Build_script.sh 
+  # yoda menu
 }
 
 keys() {
-  # Motorola edge s codename nio
-  export DEVICEDIR="device/motorola/nio"
-  export DEVICENAME=nio
-  export SOURCESCRIPT=nio
-  . Build_script.sh 
+  # keys menu
 }
 
 tx() {
-  # Motorola G8 power codename sofiaR
-  export DEVICEDIR="device/motorola/sofiar"
-  export DEVICENAME=sofiar
-  export SOURCESCRIPT=sofiar
-  . Build_script.sh 
+  # TX menu
 }
 
 
 #section1
 
-generatescript() {
+populatevars() {
 #
-. Generate_codename_clone_sources.sh
+. varsmenu.sh
 }
 
 adddevice() {
@@ -144,7 +91,7 @@ OPTIONS=(
 10 "Keys"
 11 "Yoda"
 #section2
-98 "generate device sources script"
+98 "Enter node details"
 99 "Add device to menu"
 0 "Go Back to Main"
 )
@@ -271,7 +218,7 @@ case $CHOICE in
   # generate device sources script
   clear
   BEGIN=$(date +%s)
-  generatescript
+  populatevars
   END=$(date +%s)
   clear
 ;;
