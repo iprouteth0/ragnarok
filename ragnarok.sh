@@ -26,7 +26,7 @@ echo toast
 
 balance() {
   # check balance
-dialog --title "Balances" --msgbox "$(docker exec -it node bandd query bank balances $ADDRESS)" 10 20
+dialog --title "Balances" --msgbox "$(docker exec -it node bandd query bank balances $ADDRESS)" 40 90
 }
 
 send() {
@@ -88,16 +88,16 @@ MENU="Choose one of the following options:"
 
 OPTIONS=(
 1 "Status"                                             
-2 "Balances"
-3 "Delegate" 
-4 "Undelegate"
-5 "TX"
-6 "Send"
-7 "Query"
-8 "Vote"
-9 "Unjail"
+2 "Delegate"
+3 "Undelegate" 
+4 "Balance"
+5 "Send"
+6 "Query"
+7 "Vote"
+8 "Unjail"
+9 "Yoda"
 10 "Keys"
-11 "Yoda"
+11 "TX"
 #section2
 98 "Enter node details"
 99 "Add device to menu"
