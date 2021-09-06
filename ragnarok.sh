@@ -16,44 +16,52 @@ dialog --title "bandd status" --msgbox "$(docker exec -it node bandd status)" 40
 }
 
 delegate() {
-  # delegate menu
+echo toast
 }
 
 undelegate() {
-  # undelegate menu
+# undelegate menu
+echo toast
 }
 
 balance() {
   # check balance
-dialog --title "Balances" --msgbox "$(docker exec -it node bandd query bank balances $WALLET)" 10 20
+dialog --title "Balances" --msgbox "$(docker exec -it node bandd query bank balances $ADDRESS)" 10 20
 }
 
 send() {
   # sending menu
+echo toast
 }
 
 query() {
   # query menu
+echo toast
 }
 
 vote() {
   # voting menu
+echo toast
 }
 
 unjail() {
   # quick unjail menu
+echo toast
 }
 
 yoda() {
   # yoda menu
+echo toast
 }
 
 keys() {
   # keys menu
+echo toast
 }
 
 tx() {
   # TX menu
+echo toast
 }
 
 
@@ -122,7 +130,7 @@ case $CHOICE in
   # Xiaomi Olivewood build menu
   clear
   BEGIN=$(date +%s)
-  olivewood
+  delegate
   END=$(date +%s)
   clear
 ;;
@@ -132,7 +140,7 @@ case $CHOICE in
   # Xiaomi Olivelite build menu
   clear
   BEGIN=$(date +%s)
-  olivelite
+  undelegate
   END=$(date +%s)
   clear
 ;;
@@ -143,7 +151,7 @@ case $CHOICE in
   # Xiaomi Olivelite build menu
   clear
   BEGIN=$(date +%s)
-  cafebabe
+  balance
   END=$(date +%s)
   clear
 ;;
@@ -153,7 +161,7 @@ case $CHOICE in
   # samsung beyond0qlte build menu
   clear
   BEGIN=$(date +%s)
-  beyond0qlte
+  send
   END=$(date +%s)
   clear
 ;;
@@ -162,7 +170,7 @@ case $CHOICE in
   # samsung beyond1qlte build menu
   clear
   BEGIN=$(date +%s)
-  beyond1qlte
+  query
   END=$(date +%s)
   clear
 ;;
@@ -171,7 +179,7 @@ case $CHOICE in
   # samsung beyond2qlte build menu
   clear
   BEGIN=$(date +%s)
-  beyond2qlte
+  vote
   END=$(date +%s)
   clear
 ;;
@@ -180,7 +188,7 @@ case $CHOICE in
   # samsung d1q build menu
   clear
   BEGIN=$(date +%s)
-  d1q
+  unjail
   END=$(date +%s)
   clear
 ;;
@@ -189,7 +197,7 @@ case $CHOICE in
   # samsung d2q build menu
   clear
   BEGIN=$(date +%s)
-  d2q
+  yoda
   END=$(date +%s)
   clear
 ;;
@@ -198,7 +206,7 @@ case $CHOICE in
   # Motorola edge s codename nio
   clear
   BEGIN=$(date +%s)
-  nio
+  keys
   END=$(date +%s)
   clear
 ;;
@@ -207,7 +215,7 @@ case $CHOICE in
   # Motorola G8 power codename sofiaR
   clear
   BEGIN=$(date +%s)
-  sofiar
+  tx
   END=$(date +%s)
   clear
 ;;
@@ -254,4 +262,5 @@ case $CHOICE in
     esac
 done
 ###########################################################
+
 
