@@ -1,7 +1,7 @@
 # ragnarok
 
 Terminal utility based on dialog for ODIN protocol validator nodes.
-Please understand those utility is in very early stages and is a work in progress.
+Please understand this utility is in very early stages and is a work in progress.
 All you should need to do is install git and dialog if they are not already present in the system, clone the repo, and run the primary script.
 
 ```
