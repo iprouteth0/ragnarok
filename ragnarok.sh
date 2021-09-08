@@ -16,37 +16,39 @@ dialog --title "bandd status" --msgbox "$(docker exec -it node bandd status)" 40
 }
 
 delegate() {
-echo toast
+. delegate.sh
 }
 
 undelegate() {
 # undelegate menu
-echo toast
+. undelegate.sh
 }
 
 balance() {
   # check balance
-dialog --title "Balances" --msgbox "$(docker exec -it node bandd query bank balances $ADDRESS)" 10 20
+dialog --title "Balances" --msgbox "$(docker exec -it node bandd query bank balances $ADDRESS)" 40 90
 }
 
 send() {
   # sending menu
-echo toast
+. sendmenu.sh
 }
 
 query() {
   # query menu
-echo toast
+. qmenu.sh
 }
 
 vote() {
   # voting menu
-echo toast
+votemenu.sh
 }
 
-unjail() {
-  # quick unjail menu
-echo toast
+unjail() { 
+# unjail
+#dialog --title "unjail" --msgbox "$(docker exec -it node bandd tx slashing unjail --from $(bandd keys show $ADDRESS --bech val -a) --chain-id $CHAIN --node http://34.77.171.169:26657 )" 40 90
+docker exec -it node "bandd tx slashing unjail --from $(docker exec -it node bandd keys show $ADDRESS --bech val -a) --chain-id $CHAIN --node http://34.77.171.169:26657"
+read
 }
 
 yoda() {
@@ -88,16 +90,16 @@ MENU="Choose one of the following options:"
 
 OPTIONS=(
 1 "Status"                                             
-2 "Balances"
-3 "Delegate" 
-4 "Undelegate"
-5 "TX"
-6 "Send"
-7 "Query"
-8 "Vote"
-9 "Unjail"
+2 "Delegate"
+3 "Undelegate" 
+4 "Balance"
+5 "Send"
+6 "Query"
+7 "Vote"
+8 "Unjail"
+9 "Yoda"
 10 "Keys"
-11 "Yoda"
+11 "TX"
 #section2
 98 "Enter node details"
 99 "Add device to menu"
