@@ -47,8 +47,9 @@ votemenu.sh
 unjail() { 
 # unjail
 #dialog --title "unjail" --msgbox "$(docker exec -it node bandd tx slashing unjail --from $(bandd keys show $ADDRESS --bech val -a) --chain-id $CHAIN --node http://34.77.171.169:26657 )" 40 90
-docker exec -it node "bandd tx slashing unjail --from $(docker exec -it node bandd keys show $ADDRESS --bech val -a) --chain-id $CHAIN --node http://34.77.171.169:26657"
-read
+#docker exec -it node "bandd tx slashing unjail --from $(docker exec -it node bandd keys show $ADDRESS --bech val -a) --chain-id $CHAIN --node http://34.77.171.169:26657"
+#read
+. unjail.sh
 }
 
 yoda() {
