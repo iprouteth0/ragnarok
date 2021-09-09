@@ -8,7 +8,7 @@ All you should need to do is install git and dialog if they are not already pres
 sudo apt update
 sudo apt install git dialog
 git clone https://GitHub.com/iprouteth0/ragnarok
-cd ragnarok && ./ragnarok
+cd ragnarok && . ragnarok
 ```
 
 I'll likely be updating it frequently, so keep an eye on the repo activity.
