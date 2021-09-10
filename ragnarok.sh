@@ -36,7 +36,8 @@ send() {
 
 query() {
   # query menu
-. qmenu.sh
+. query/qmenu.sh
+read
 }
 
 vote() {

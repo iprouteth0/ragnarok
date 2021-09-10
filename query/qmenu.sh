@@ -7,92 +7,99 @@
 #
 #      http://www.apache.org/licenses/LICENSE-2.0
 #
-
 #functions
 account() {
-  # ginna Build menu
-dialog --title "bandd status" --msgbox "$(docker exec -it node bandd status)" 40 90
-
+  # account query menu
+. qaccount.sh
 }
 
 auction() {
-. delegate.sh
+. qauction.sh
 }
 
 auth() {
-# undelegate menu
-. undelegate.sh
+# auth query menu
+. qauth.sh
 }
 
 bank() {
-  # check balance
-dialog --title "Balances" --msgbox "$(docker exec -it node bandd query bank balances $ADDRESS)" 40 90
+  # bank query menu
+. qbank.sh
 }
 
 block() {
-  # sending menu
-. sendmenu.sh
+  # block query menu
+. qblock.sh
 }
 
 coinswap() {
-  # query menu
-. qmenu.sh
+  # coinswap query menu
+. qcoinswap.sh
 }
 
 distribution() {
-  # voting menu
-votemenu.sh
+  # distribution query menu
+. qdistribution.sh
 }
 
 evidence() { 
-# unjail
-#dialog --title "unjail" --msgbox "$(docker exec -it node bandd tx slashing unjail --from $(bandd keys show $ADDRESS --bech val -a) --chain-id $CHAIN --node http://34.77.171.169:26657 )" 40 90
-#docker exec -it node "bandd tx slashing unjail --from $(docker exec -it node bandd keys show $ADDRESS --bech val -a) --chain-id $CHAIN --node http://34.77.171.169:26657"
-#read
-. unjail.sh
+# evidence query menu
+. qevidence.sh
 }
 
 gov() {
-  # yoda menu
-echo toast
+  # gov query menu
+. qgov.sh
 }
 
 ibc() {
-  # keys menu
-echo toast
+  # ibc query menu
+. qibc.sh
 }
 
 mint() {
-  # TX menu
-echo toast
+  # query mint menu
+. qmint.sh
 }
 
 oracle() {
-echo toast
+# oracle query menu
+. qoracle.sh
 }
 
 params() {
-echo toast 
+# query params menu
+. qparams.sh
 }
 
 slashing() {
-echo toast
+#slashing query menu
+. qslashing.sh
 }
 
 staking() {
-echo toast
+# staking query menu
+. qstaking.sh
 }
 
 telemetry() {
-echo toast
+# telemetry query menu
+. qtelemetry.sh
 }
 
 tendermint() {
-echo toast
+# tendermint-validator-set query menu
+. qtendermint.sh
 }
 
 tx() {
-echo toast
+# tx query menu
+. qtx.sh
+}
+
+upgrade() {
+# upgrade query menu
+. qupgrade.sh
 }
 
 #section1
@@ -133,7 +140,7 @@ OPTIONS=(
 14 "Slashing"
 15 "Staking"
 16 "Telemetry"
-17 "Tendermint-validator-set""
+17 "Tendermint-validator-set"
 18 "TX"
 19 "Upgrade"
 #section2
@@ -158,7 +165,7 @@ case $CHOICE in
   # Motorola ginna build menu
   clear
   BEGIN=$(date +%s)
-  status
+  account
   END=$(date +%s)
   clear
 ;;
@@ -168,7 +175,7 @@ case $CHOICE in
   # Xiaomi Olivewood build menu
   clear
   BEGIN=$(date +%s)
-  delegate
+  auction
   END=$(date +%s)
   clear
 ;;
@@ -178,7 +185,7 @@ case $CHOICE in
   # Xiaomi Olivelite build menu
   clear
   BEGIN=$(date +%s)
-  undelegate
+  auth
   END=$(date +%s)
   clear
 ;;
@@ -189,7 +196,7 @@ case $CHOICE in
   # Xiaomi Olivelite build menu
   clear
   BEGIN=$(date +%s)
-  balance
+  bank
   END=$(date +%s)
   clear
 ;;
@@ -199,7 +206,7 @@ case $CHOICE in
   # samsung beyond0qlte build menu
   clear
   BEGIN=$(date +%s)
-  send
+  block
   END=$(date +%s)
   clear
 ;;
@@ -208,7 +215,7 @@ case $CHOICE in
   # samsung beyond1qlte build menu
   clear
   BEGIN=$(date +%s)
-  query
+  coinswap
   END=$(date +%s)
   clear
 ;;
@@ -217,7 +224,7 @@ case $CHOICE in
   # samsung beyond2qlte build menu
   clear
   BEGIN=$(date +%s)
-  vote
+  distribution
   END=$(date +%s)
   clear
 ;;
@@ -226,7 +233,7 @@ case $CHOICE in
   # samsung d1q build menu
   clear
   BEGIN=$(date +%s)
-  unjail
+  evidence
   END=$(date +%s)
   clear
 ;;
@@ -235,7 +242,7 @@ case $CHOICE in
   # samsung d2q build menu
   clear
   BEGIN=$(date +%s)
-  yoda
+  gov
   END=$(date +%s)
   clear
 ;;
@@ -244,7 +251,7 @@ case $CHOICE in
   # Motorola edge s codename nio
   clear
   BEGIN=$(date +%s)
-  keys
+  ibc
   END=$(date +%s)
   clear
 ;;
@@ -253,11 +260,84 @@ case $CHOICE in
   # Motorola G8 power codename sofiaR
   clear
   BEGIN=$(date +%s)
-  tx
+  mint
+  END=$(date +%s)
+  clear
+;;
+#############################################################
+12 )
+  # samsung beyond2qlte build menu
+  clear
+  BEGIN=$(date +%s)
+  oracle
+  END=$(date +%s)
+  clear
+;;
+#############################################################
+13 )
+  # samsung d1q build menu
+  clear
+  BEGIN=$(date +%s)
+  params
+  END=$(date +%s)
+  clear
+;;
+#############################################################
+14 )
+  # samsung d2q build menu
+  clear
+  BEGIN=$(date +%s)
+  slashing
+  END=$(date +%s)
+  clear
+;;
+#############################################################
+15 )
+  # Motorola edge s codename nio
+  clear
+  BEGIN=$(date +%s)
+  staking
+  END=$(date +%s)
+  clear
+;;
+##############################################################
+16 )
+  # Motorola G8 power codename sofiaR
+  clear
+  BEGIN=$(date +%s)
+  telemetry
   END=$(date +%s)
   clear
 ;;
 ##########################################################
+#############################################################
+17 )
+  # samsung beyond2qlte build menu
+  clear
+  BEGIN=$(date +%s)
+  tendermint
+  END=$(date +%s)
+  clear
+;;
+#############################################################
+18 )
+  # samsung d1q build menu
+  clear
+  BEGIN=$(date +%s)
+  tx
+  END=$(date +%s)
+  clear
+;;
+#############################################################
+19 )
+  # samsung d2q build menu
+  clear
+  BEGIN=$(date +%s)
+  upgrade
+  END=$(date +%s)
+  clear
+;;
+#############################################################
 # section4
 #############################################################
 98 )
@@ -301,27 +381,3 @@ case $CHOICE in
 dqone
 ###########################################################
 
-
-
-
-
-qaccount.sh
-qauction.sh
-qauth.sh
-qbank.sh
-qblock.sh
-qcoinswap.sh
-qdistribution.sh
-qevidence.sh
-qgov.sh
-qibc.sh
-
-qmint.sh
-qoracle.sh
-qparams.sh
-qslashing.sh
-qstaking.sh
-qtelemetry.sh
-qtendermint.sh
-qtx.sh
-qupgrade.sh
