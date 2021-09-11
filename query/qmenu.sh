@@ -378,6 +378,6 @@ case $CHOICE in
     sleep 1
     clear
     esac
-dqone
+done
 ###########################################################
 
