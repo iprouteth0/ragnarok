@@ -75,7 +75,7 @@ case $CHOICE in
 0 ) 
   # Return To Main Menu
 #  cd ${SOURCE2}
-  ./qmenu.sh
+  ./query/qmenu.sh
 ;; 
 * ) clear
     echo "Wrong Choice AssFace, 1-3 or 0 to Return to Main Menu"

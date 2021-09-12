@@ -10,96 +10,112 @@
 #functions
 account() {
   # account query menu
-. qaccount.sh
+. query/qaccount.sh
 }
 
 auction() {
-. qauction.sh
+. query/qauction.sh
 }
 
 auth() {
 # auth query menu
-. qauth.sh
+. query/qauth.sh
 }
 
 bank() {
   # bank query menu
-. qbank.sh
+. query/qbank.sh
 }
 
 block() {
   # block query menu
-. qblock.sh
+mkdir tmp
+dialog --backtitle "Block query menu" --title "Block query form" \
+--form "\npopulate block query form" 15 90 7 \
+"Height:" 1 1 "" 1 25 70 120  \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/qblock.tmp \
+2>&1 >/dev/tty
+
+# Start retrieving each line from temp file 1 by one with sed and 
+# declare variables as inputs
+export HEIGHT=`sed -n 1p tmp/qblock.tmp`
+export CHAIN=`sed -n 2p tmp/qblock.tmp`
+docker exec -it node bandd query block $HEIGHT --chain-id $CHAIN
+echo "press enter to continue"
+read
+# remove temporary file created
+rm -f tmp/qblock.tmp
 }
 
 coinswap() {
   # coinswap query menu
-. qcoinswap.sh
+. query/qcoinswap.sh
+read
 }
 
 distribution() {
   # distribution query menu
-. qdistribution.sh
+. query/qdistribution.sh
 }
 
 evidence() { 
 # evidence query menu
-. qevidence.sh
+. query/evidence.sh
 }
 
 gov() {
   # gov query menu
-. qgov.sh
+. query/qgov.sh
 }
 
 ibc() {
   # ibc query menu
-. qibc.sh
+. query/qibc.sh
 }
 
 mint() {
   # query mint menu
-. qmint.sh
+. query/qmint.sh
 }
 
 oracle() {
 # oracle query menu
-. qoracle.sh
+. query/qoracle.sh
 }
 
 params() {
 # query params menu
-. qparams.sh
+. query/qparams.sh
 }
 
 slashing() {
 #slashing query menu
-. qslashing.sh
+. query/qslashing.sh
 }
 
 staking() {
 # staking query menu
-. qstaking.sh
+. query/qstaking.sh
 }
 
 telemetry() {
 # telemetry query menu
-. qtelemetry.sh
+. query/qtelemetry.sh
 }
 
 tendermint() {
 # tendermint-validator-set query menu
-. qtendermint.sh
+. query/qtendermint.sh
 }
 
 tx() {
 # tx query menu
-. qtx.sh
+. query/qtx.sh
 }
 
 upgrade() {
 # upgrade query menu
-. qupgrade.sh
+. query/qupgrade.sh
 }
 
 #section1
