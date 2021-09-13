@@ -84,7 +84,7 @@ dialog --backtitle "Proposer query menu" --title "Proposer query form" \
 2>&1 >/dev/tty
 
 # Start retrieving each line from temp file 1 by one with sed and declare variables as >
-export PROPOSER=`sed -n 1p tmp/qgov.tmp`
+export PROPOSAL=`sed -n 1p tmp/qgov.tmp`
 export CHAIN=`sed -n 2p tmp/qgov.tmp`
 
 docker exec -it node bandd query gov proposer $PROPOSAL --chain-id $CHAIN
@@ -95,15 +95,62 @@ rm -f tmp/qgov.tmp
 }
 
 tally() {
-echo toast
+mkdir tmp
+dialog --backtitle "Tally query menu" --title "Tally query form" \
+--form "\npopulate tally query form" 15 90 7 \
+"Proposal-id:" 1 1 "" 1 25 70 120  \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/qgov.tmp \
+2>&1 >/dev/tty
+
+# Start retrieving each line from temp file 1 by one with sed and declare variables as >
+export PROPOSAL=`sed -n 1p tmp/qgov.tmp`
+export CHAIN=`sed -n 2p tmp/qgov.tmp`
+
+docker exec -it node bandd query gov tally $PROPOSAL --chain-id $CHAIN
+echo "press enter to continue"
+read
+# remove temporary file created
+rm -f tmp/qgov.tmp
 }
 
 vote() {
-echo toast
+mkdir tmp
+dialog --backtitle "gov vote query menu" --title "gov vote query form" \
+--form "\npopulate gov vote query form" 15 90 7 \
+"proposal-id:" 1 1 "" 1 25 70 120  \
+"Voter address:" 2 1 "" 2 25 70 120 \
+"chain-id:" 3 1 "" 3 25 70 120 > tmp/qgov.tmp \
+2>&1 >/dev/tty
+
+# Start retrieving each line from temp file 1 by one with sed and declare variables as inputs
+export PROPOSAL=`sed -n 1p tmp/qgov.tmp`
+export VOTER=`sed -n 2p tmp/qgov.tmp`
+export CHAIN=`sed -n 3p tmp/qgov.tmp`
+
+docker exec -it node bandd query gov vote $PROPOSAL $VOTER --chain-id $CHAIN
+echo "press enter to continue"
+read
+# remove temporary file created
+rm -f tmp/qgov.tmp
 }
 
 votes() {
-echo toast
+mkdir tmp
+dialog --backtitle "Votes query menu" --title "Votes query form" \
+--form "\npopulate votes query form" 15 90 7 \
+"Proposal-id:" 1 1 "" 1 25 70 120  \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/qgov.tmp \
+2>&1 >/dev/tty
+
+# Start retrieving each line from temp file 1 by one with sed and declare variables as >
+export PROPOSAL=`sed -n 1p tmp/qgov.tmp`
+export CHAIN=`sed -n 2p tmp/qgov.tmp`
+
+docker exec -it node bandd query gov votes $PROPOSAL --chain-id $CHAIN
+echo "press enter to continue"
+read
+# remove temporary file created
+rm -f tmp/qgov.tmp
 }
 
 
