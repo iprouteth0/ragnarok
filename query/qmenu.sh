@@ -60,7 +60,7 @@ distribution() {
 
 evidence() { 
 # evidence query menu
-. query/evidence.sh
+docker exec -it node bandd query evidence
 }
 
 gov() {
