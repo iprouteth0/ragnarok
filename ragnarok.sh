@@ -26,7 +26,21 @@ undelegate() {
 
 balance() {
   # check balance
-dialog --title "Balances" --msgbox "$(docker exec -it node bandd query bank balances $ADDRESS)" 40 90
+mkdir tmp
+dialog --backtitle "Balances query menu" --title "Balances query form" \
+--form "\npopulate balances query form" 15 90 7 \
+"Wallet:" 1 1 "" 1 25 70 120  \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/balances.tmp \
+2>&1 >/dev/tty
+# Start retrieving each line from temp file 1 by one with sed and
+# declare variables as inputs
+export ADDRESS=`sed -n 1p tmp/balances.tmp`
+export CHAIN=`sed -n 2p tmp/balances.tmp`
+docker exec -it node bandd query bank balances $ADDRESS --chain-id $CHAIN --node http://34.77.171.169:26657
+echo "press enter to continue"
+read
+# remove temporary file created
+rm -f tmp/balances.tmp
 }
 
 send() {
