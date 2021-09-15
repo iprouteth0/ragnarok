@@ -61,6 +61,8 @@ distribution() {
 evidence() { 
 # evidence query menu
 docker exec -it node bandd query evidence
+echo "press enter to continue"
+read
 }
 
 gov() {
