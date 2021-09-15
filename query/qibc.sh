@@ -17,7 +17,20 @@ echo "press enter to continue"
 read
 }
 
-client() {
+client-header() {
+docker exec -it node bandd query ibc client header --chain-id $CHAIN
+echo "press enter to continue"
+read
+}
+
+client-node-state() {
+docker exec -it node bandd query ibc client node-state --chain-id $CHAIN
+echo "press enter to continue"
+read
+}
+
+client-params() {
+docker exec -it node bandd query ibc client params --chain-id $CHAIN
 echo "press enter to continue"
 read
 }
@@ -61,7 +74,7 @@ case $CHOICE in
   # Motorola ginna build menu
   clear
   BEGIN=$(date +%s)
-  balances
+  channel
   END=$(date +%s)
   clear
 ;;
@@ -71,7 +84,7 @@ case $CHOICE in
   # Xiaomi Olivewood build menu
   clear
   BEGIN=$(date +%s)
-  denom-metadata
+  client-header
   END=$(date +%s)
   clear
 ;;
@@ -81,7 +94,29 @@ case $CHOICE in
   # query bank total
   clear
   BEGIN=$(date +%s)
-  total
+  client-node-state
+  END=$(date +%s)
+  clear
+;;
+###############################################################
+#############################################################
+
+4 )
+  # query bank total
+  clear
+  BEGIN=$(date +%s)
+  client-params
+  END=$(date +%s)
+  clear
+;;
+###############################################################
+#############################################################
+
+5 )
+  # query bank total
+  clear
+  BEGIN=$(date +%s)
+  connection
   END=$(date +%s)
   clear
 ;;
