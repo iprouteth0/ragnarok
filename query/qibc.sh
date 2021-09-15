@@ -8,35 +8,34 @@
 #      http://www.apache.org/licenses/LICENSE-2.0
 
 CHAIN=odin-testnet-baldur
-
 #functions
 channel() {
   # account query menu
-docker exec -it node bandd query ibc channel channels --chain-id $CHAIN
+dialog --title "query ibc" --msgbox "$(docker exec -it node bandd query ibc channel channels --chain-id $CHAIN)"
 echo "press enter to continue"
 read
 }
 
 client-header() {
-docker exec -it node bandd query ibc client header --chain-id $CHAIN
+dialog --title "query ibc" --msgbox "$(docker exec -it node bandd query ibc client header --chain-id $CHAIN)"
 echo "press enter to continue"
 read
 }
 
 client-node-state() {
-docker exec -it node bandd query ibc client node-state --chain-id $CHAIN
+dialog --title "query ibc" --msgbox "$(docker exec -it node bandd query ibc client node-state --chain-id $CHAIN)"
 echo "press enter to continue"
 read
 }
 
 client-params() {
-docker exec -it node bandd query ibc client params --chain-id $CHAIN
+dialog --title "query ibc" --msgbox "$(docker exec -it node bandd query ibc client params --chain-id $CHAIN)"
 echo "press enter to continue"
 read
 }
 
 connection() {
-docker exec -it node bandd query ibc connection connections --chain-id $CHAIN
+dialog --title "query ibc" --msgbox "$(docker exec -it node bandd query ibc connection connections --chain-id $CHAIN)"
 echo "press enter to continue"
 read
 }
