@@ -18,6 +18,17 @@ dialog --title "query active oracle validators" --msgbox "$(docker exec -it node
 }
 
 data() {
+mkdir tmp
+dialog --backtitle "ORACLE menu" --title "oracle validator form" \
+--form "\npopulate oracle form" 15 90 7 \
+"Data hash:" 1 1 "" 1 25 70 120  \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/qoracle.tmp \
+2>&1 >/dev/tty
+export DATAHASH=`sed -n 1p tmp/qoracle.tmp`
+export CHAIN=`sed -n 2p tmp/qoracle.tmp`
+dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle data $DATAHASH --chain-id $CHAIN)" 40 90
+rm -f tmp/qoracle.tmp
+echo "press enter to continue"
 read
 }
 
@@ -33,24 +44,70 @@ dialog --title "query active oracle validators" --msgbox "$(docker exec -it node
 
 data-source() {
   # coinswap query menu
+mkdir tmp
+dialog --backtitle "ORACLE menu" --title "oracle validator form" \
+--form "\npopulate oracle form" 15 90 7 \
+"Data source id:" 1 1 "" 1 25 70 120  \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/qoracle.tmp \
+2>&1 >/dev/tty
+export DATASOURCEID=`sed -n 1p tmp/qoracle.tmp`
+export CHAIN=`sed -n 2p tmp/qoracle.tmp`
+dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle data-source $DATASOURCEID --chain-id $CHAIN)" 40 90
+rm -f tmp/qoracle.tmp
+echo "press enter to continue"
 read
 }
 
 data-sources() {
   # distribution query menu
+mkdir tmp
+dialog --backtitle "ORACLE menu" --title "oracle validator form" \
+--form "\npopulate oracle form" 15 90 7 \
+"Limit:" 1 1 "" 1 25 70 120  \
+"Offset:" 2 1 "" 2 25 70 120 \
+"chain-id:" 3 1 "" 3 25 70 120 > tmp/qoracle.tmp \
+2>&1 >/dev/tty
+export LIMIT=`sed -n 1p tmp/qoracle.tmp`
+export OFFSET=`sed -n 2p tmp/qoracle.tmp`
+export CHAIN=`sed -n 3p tmp/qoracle.tmp`
+dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle data-sources $LIMIT $OFFSET --chain-id $CHAIN)" 40 90
+rm -f tmp/qoracle.tmp
+echo "press enter to continue"
 read
 }
 
 oracle-script() {
 # evidence query menu
-docker exec -it node bandd query evidence
+mkdir tmp
+dialog --backtitle "ORACLE menu" --title "oracle validator form" \
+--form "\npopulate oracle form" 15 90 7 \
+"script id:" 1 1 "" 1 25 70 120 \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/qoracle.tmp \
+2>&1 >/dev/tty
+export SCRIPTID=`sed -n 1p tmp/qoracle.tmp`
+export CHAIN=`sed -n 2p tmp/qoracle.tmp`
+dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle oracle-script $SCRIPTID --chain-id $CHAIN)" 40 90
+rm -f tmp/qoracle.tmp
 echo "press enter to continue"
 read
 }
 
 oracle-scripts() {
   # gov query menu
-. query/qgov.sh
+mkdir tmp
+dialog --backtitle "ORACLE menu" --title "oracle validator form" \
+--form "\npopulate oracle form" 15 90 7 \
+"Limit:" 1 1 "" 1 25 70 120  \
+"Offset:" 2 1 "" 2 25 70 120 \
+"chain-id:" 3 1 "" 3 25 70 120 > tmp/qoracle.tmp \
+2>&1 >/dev/tty
+export LIMIT=`sed -n 1p tmp/qoracle.tmp`
+export OFFSET=`sed -n 2p tmp/qoracle.tmp`
+export CHAIN=`sed -n 3p tmp/qoracle.tmp`
+dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle oracle-scripts $LIMIT $OFFSET --chain-id $CHAIN)" 40 90
+rm -f tmp/qoracle.tmp
+echo "press enter to continue"
+read
 }
 
 params() {
@@ -60,12 +117,34 @@ dialog --title "query active oracle validators" --msgbox "$(docker exec -it node
 
 reporters() {
   # query mint menu
-. query/qmint.sh
+mkdir tmp
+dialog --backtitle "ORACLE menu" --title "oracle validator form" \
+--form "\npopulate oracle form" 15 90 7 \
+"Validator:" 1 1 "" 1 25 70 120  \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/qoracle.tmp \
+2>&1 >/dev/tty
+export VALIDATOR=`sed -n 1p tmp/qoracle.tmp`
+export CHAIN=`sed -n 2p tmp/qoracle.tmp`
+dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle reporters $VALIDATOR --chain-id $CHAIN)" 40 90
+rm -f tmp/qoracle.tmp
+echo "press enter to continue"
+read
 }
 
 request() {
 # oracle query menu
-. query/qoracle.sh
+mkdir tmp
+dialog --backtitle "ORACLE menu" --title "oracle validator form" \
+--form "\npopulate oracle form" 15 90 7 \
+"Request id:" 1 1 "" 1 25 70 120  \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/qoracle.tmp \
+2>&1 >/dev/tty
+export REQUESTID=`sed -n 1p tmp/qoracle.tmp`
+export CHAIN=`sed -n 2p tmp/qoracle.tmp`
+dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle request $REQUESTID --chain-id $CHAIN)" 40 90
+rm -f tmp/qoracle.tmp
+echo "press enter to continue"
+read
 }
 
 request-price() {
@@ -75,17 +154,56 @@ request-price() {
 
 request-reports() {
 #slashing query menu
-. query/qslashing.sh
+mkdir tmp
+dialog --backtitle "ORACLE menu" --title "oracle validator form" \
+--form "\npopulate oracle form" 15 90 7 \
+"Limit:" 1 1 "" 1 25 70 120  \
+"Offset:" 2 1 "" 2 25 70 120 \
+"Request id:" 3 1 "" 3 25 70 120 \
+"chain-id:" 4 1 "" 4 25 70 120 > tmp/qoracle.tmp \
+2>&1 >/dev/tty
+export LIMIT=`sed -n 1p tmp/qoracle.tmp`
+export OFFSET=`sed -n 2p tmp/qoracle.tmp`
+export REQUESTID=`sed -n 3p tmp/qoracle.tmp`
+export CHAIN=`sed -n 4p tmp/qoracle.tmp`
+dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle request-reports $REQUESTID $LIMIT $OFFSET --chain-id $CHAIN)" 40 90
+rm -f tmp/qoracle.tmp
+echo "press enter to continue"
+read
 }
 
 request-search() {
 # staking query menu
-. query/qstaking.sh
+mkdir tmp
+dialog --backtitle "ORACLE menu" --title "oracle validator form" \
+--form "\npopulate oracle form" 15 90 7 \
+"Data source id:" 1 1 "" 1 25 70 120  \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/qoracle.tmp \
+2>&1 >/dev/tty
+export ORACLESCRIPTID=`sed -n 1p tmp/qoracle.tmp`
+export CHAIN=`sed -n 2p tmp/qoracle.tmp`
+dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle request-search -s $ORACLESCRIPTID --chain-id $CHAIN)" 40 90
+rm -f tmp/qoracle.tmp
+echo "press enter to continue"
+read
 }
 
 requests() {
 # telemetry query menu
-. query/qtelemetry.sh
+mkdir tmp
+dialog --backtitle "ORACLE menu" --title "oracle validator form" \
+--form "\npopulate oracle form" 15 90 7 \
+"Limit:" 1 1 "" 1 25 70 120  \
+"Offset:" 2 1 "" 2 25 70 120 \
+"chain-id:" 3 1 "" 3 25 70 120 > tmp/qoracle.tmp \
+2>&1 >/dev/tty
+export LIMIT=`sed -n 1p tmp/qoracle.tmp`
+export OFFSET=`sed -n 2p tmp/qoracle.tmp`
+export CHAIN=`sed -n 3p tmp/qoracle.tmp`
+dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle requests  $LIMIT $OFFSET --chain-id $CHAIN)" 40 90
+rm -f tmp/qoracle.tmp
+echo "press enter to continue"
+read
 }
 
 validator() {
