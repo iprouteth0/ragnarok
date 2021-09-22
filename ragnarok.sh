@@ -93,6 +93,7 @@ populatevars() {
 nodesetup() {
   # Add device to menu using scripts
   ./nodesetup.sh
+read
 }
 
 ###############
