@@ -90,9 +90,9 @@ populatevars() {
 . varsmenu.sh
 }
 
-adddevice() {
+nodesetup() {
   # Add device to menu using scripts
-  . AddDevice.sh
+  ./nodesetup.sh
 }
 
 ###############
@@ -118,7 +118,7 @@ OPTIONS=(
 11 "TX"
 #section2
 98 "Enter node details"
-99 "Add device to menu"
+99 "Initial node setup"
 0 "Go Back to Main"
 )
 
@@ -253,7 +253,7 @@ case $CHOICE in
   # Add device to build menu
   clear
   BEGIN=$(date +%s)
-  adddevice
+  nodesetup
   END=$(date +%s)
   clear
 ;;
