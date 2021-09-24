@@ -108,6 +108,7 @@ bandd tx staking create-validator \
 --moniker $MONIKER \
 --pubkey $(bandd tendermint show-validator) \
 --chain-id $CHAIN
+--node http://34.77.171.169:26657
 sleep 5
 exit
 echo "press enter to continue"
