@@ -89,7 +89,7 @@ dialog --backtitle "create validator delegate menu" --title "create validator de
 --form "\npopulate create validator delegate form" 15 90 7 \
 "Wallet address:" 1 1 "" 1 25 70 120  \
 "Moniker:" 2 1 "" 2 25 70 120 \
-"Stake(12345loki):"3 1 "" 3 25 70 120 \
+"Stake(12345loki):" 3 1 "" 3 25 70 120 \
 "chain-id:" 4 1 "" 4 25 70 120 > tmp/validator.tmp \
 2>&1 >/dev/tty
 
