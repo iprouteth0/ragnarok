@@ -98,7 +98,7 @@ export ADDRESS=`sed -n 1p tmp/validator.tmp`
 export MONIKER=`sed -n 2p tmp/validator.tmp`
 export STAKE=`sed -n 3p tmp/validator.tmp`
 export CHAIN=`sed -n 4p tmp/validator.tmp`
-docker exec -e STAKE=$STAKE -e ADDRESS=$ADDRESS -e MONIKER=$MONIKER -e CHAIN=$CHAIN -it node bandd tx staking create-validator --amount $STAKE --commission-max-change-rate 0.01 --commission-max-rate 0.2 --commission-rate 0.1 --from $ADDRESS --min-self-delegation 1 --moniker $MONIKER --pubkey $(bandd tendermint show-validator) --chain-id $CHAIN --node http://34.77.171.169:26657
+docker exec -e STAKE=$STAKE -e ADDRESS=$ADDRESS -e MONIKER=$MONIKER -e CHAIN=$CHAIN -it node bandd tx staking create-validator --amount $STAKE --commission-max-change-rate 0.01 --commission-max-rate 0.2 --commission-rate 0.1 --from $ADDRESS --min-self-delegation 1 --moniker $MONIKER --pubkey $(docker exec -it node bandd tendermint show-validator) --chain-id $CHAIN --node http://34.77.171.169:26657
 sleep 5
 exit
 echo "press enter to continue"
