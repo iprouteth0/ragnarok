@@ -82,6 +82,39 @@ tx() {
 echo toast
 }
 
+create-validator() {
+mkdir tmp
+dialog --backtitle "create validator delegate menu" --title "create validator delegate form" \
+--form "\npopulate create validator delegate form" 15 90 7 \
+"Wallet address:" 1 1 "" 1 25 70 120  \
+"Moniker:" 2 1 "" 2 25 70 120 \
+"Stake(12345loki):"3 1 "" 3 25 70 120 \
+"chain-id:" 4 1 "" 4 25 70 120 > tmp/validator.tmp \
+2>&1 >/dev/tty
+
+# Start retrieving each line from temp file 1 by one with sed and declare variables as inputs
+export ADDRESS=`sed -n 1p tmp/validator.tmp`
+export MONIKER=`sed -n 2p tmp/validator.tmp`
+export STAKE=`sed -n 3p tmp/validator.tmp`
+export CHAIN=`sed -n 4p tmp/validator.tmp`
+docker exec -e STAKE=$STAKE -e ADDRESS=$ADDRESS -e MONIKER=$MONIKER -e CHAIN=$CHAIN -it node /bin/bash
+bandd tx staking create-validator \
+--amount $STAKE \
+--commission-max-change-rate 0.01 \
+--commission-max-rate 0.2 \
+--commission-rate 0.1 \
+--from $ADDRESS \
+--min-self-delegation 1 \
+--moniker $MONIKER \
+--pubkey $(bandd tendermint show-validator) \
+--chain-id $CHAIN
+sleep 5
+exit
+echo "press enter to continue"
+read
+# remove temporary file created
+rm -f tmp/validator.tmp
+}
 
 #section1
 
@@ -117,6 +150,7 @@ OPTIONS=(
 9 "Yoda"
 10 "Keys"
 11 "TX"
+12 "create validator"
 #section2
 98 "Enter node details"
 99 "Initial node setup"
@@ -235,6 +269,16 @@ case $CHOICE in
   clear
   BEGIN=$(date +%s)
   tx
+  END=$(date +%s)
+  clear
+;;
+##########################################################
+##############################################################
+12 )
+  # Motorola G8 power codename sofiaR
+  clear
+  BEGIN=$(date +%s)
+  create-validator
   END=$(date +%s)
   clear
 ;;
