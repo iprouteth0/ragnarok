@@ -13,6 +13,7 @@ CHAIN=odin-testnet-baldur
 params() {
   # account query menu
 dialog --title "query slashing params" --msgbox "$(docker exec -it node bandd q slashing params --chain-id $CHAIN --node http://34.77.171.169:26657)"
+read
 }
 
 signing-info() {
@@ -30,6 +31,7 @@ export CHAIN=`sed -n 2p tmp/qslashing.tmp`
 dialog --title "slashing signing-info" --msgbox "$(docker exec -it node bandd query slashing signing-info $VALCONSPUB --chain-id $CHAIN --node http://34.77.171.169:26657)"
 # remove temporary file created
 rm -f tmp/qslashing.tmp
+read
 }
 
 signing-infos() {
@@ -47,6 +49,7 @@ export CHAIN=`sed -n 2p tmp/qslashing.tmp`
 dialog --title "slashing signing-info" --msgbox "$(docker exec -it node bandd query slashing signing-infos $VALCONSPUB --chain-id $CHAIN --node http://34.77.171.169:26657)"
 # remove temporary file created
 rm -f tmp/qslashing.tmp
+read
 }
 
 generate() {
