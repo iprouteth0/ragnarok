@@ -251,7 +251,7 @@ case $CHOICE in
   # Motorola ginna build menu
   clear
   BEGIN=$(date +%s)
-  active-validators
+  delegation
   END=$(date +%s)
   clear
 ;;
@@ -261,7 +261,7 @@ case $CHOICE in
   # Xiaomi Olivewood build menu
   clear
   BEGIN=$(date +%s)
-  counts
+  delegations
   END=$(date +%s)
   clear
 ;;
@@ -271,7 +271,7 @@ case $CHOICE in
   # Xiaomi Olivelite build menu
   clear
   BEGIN=$(date +%s)
-  data
+  delegations-to
   END=$(date +%s)
   clear
 ;;
@@ -282,7 +282,7 @@ case $CHOICE in
   # Xiaomi Olivelite build menu
   clear
   BEGIN=$(date +%s)
-  data-provider-reward
+  historical-info
   END=$(date +%s)
   clear
 ;;
@@ -292,7 +292,7 @@ case $CHOICE in
   # samsung beyond0qlte build menu
   clear
   BEGIN=$(date +%s)
-  data-providers-pool
+  params
   END=$(date +%s)
   clear
 ;;
@@ -301,7 +301,7 @@ case $CHOICE in
   # samsung beyond1qlte build menu
   clear
   BEGIN=$(date +%s)
-  data-source
+  pool
   END=$(date +%s)
   clear
 ;;
@@ -310,7 +310,7 @@ case $CHOICE in
   # samsung beyond2qlte build menu
   clear
   BEGIN=$(date +%s)
-  data-sources
+  redelegation
   END=$(date +%s)
   clear
 ;;
@@ -319,7 +319,7 @@ case $CHOICE in
   # samsung d1q build menu
   clear
   BEGIN=$(date +%s)
-  oracle-script
+  redelegations
   END=$(date +%s)
   clear
 ;;
@@ -328,7 +328,7 @@ case $CHOICE in
   # samsung d2q build menu
   clear
   BEGIN=$(date +%s)
-  oracle-scripts
+  redelegations-from
   END=$(date +%s)
   clear
 ;;
@@ -337,7 +337,7 @@ case $CHOICE in
   # Motorola edge s codename nio
   clear
   BEGIN=$(date +%s)
-  params
+  unbonding-delegation
   END=$(date +%s)
   clear
 ;;
@@ -346,7 +346,7 @@ case $CHOICE in
   # Motorola G8 power codename sofiaR
   clear
   BEGIN=$(date +%s)
-  reporters
+  unbonding-delegations
   END=$(date +%s)
   clear
 ;;
@@ -355,7 +355,7 @@ case $CHOICE in
   # samsung beyond2qlte build menu
   clear
   BEGIN=$(date +%s)
-  request
+  unbonding-delegations-from
   END=$(date +%s)
   clear
 ;;
@@ -364,7 +364,7 @@ case $CHOICE in
   # samsung d1q build menu
   clear
   BEGIN=$(date +%s)
-  request-price
+  validator
   END=$(date +%s)
   clear
 ;;
@@ -373,7 +373,7 @@ case $CHOICE in
   # samsung d2q build menu
   clear
   BEGIN=$(date +%s)
-  request-reports
+  validators
   END=$(date +%s)
   clear
 ;;
