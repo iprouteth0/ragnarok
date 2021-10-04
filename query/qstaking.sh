@@ -202,7 +202,10 @@ read
 
 validators() {
 # staking query menu
-dialog --title "query staking validators" --msgbox "$(docker exec -it node bandd query staking validators --node http://34.77.171.169:26657)" 40 90
+mkdir -p tmp
+docker exec node bandd q staking validators --node http://34.77.171.169:26657 > tmp/validators.tmp
+dialog --title "query staking validators" --textbox tmp/validators.tmp 12000 90
+rm -f tmp/validators.tmp
 }
  
 #section1
