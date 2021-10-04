@@ -8,220 +8,203 @@
 #      http://www.apache.org/licenses/LICENSE-2.0
 #
 #functions
-active-validators() {
+delegation() {
   # account query menu
-dialog --title "query active oracle validators" --msgbox "$(docker exec -it node bandd query oracle active-validators)" 40 90
-}
-
-counts() {
-dialog --title "query active oracle validators" --msgbox "$(docker exec -it node bandd query oracle counts)" 40 90
-}
-
-data() {
 mkdir tmp
-dialog --backtitle "ORACLE menu" --title "oracle validator form" \
---form "\npopulate oracle form" 15 90 7 \
-"Data hash:" 1 1 "" 1 25 70 120  \
-"chain-id:" 2 1 "" 2 25 70 120 > tmp/qoracle.tmp \
+dialog --backtitle "Query delegation menu" --title "query delegation form" \
+--form "\npopulate query delegation form" 15 90 7 \
+"Delegator wallet address:" 1 1 "" 1 25 70 120  \
+"Validator:" 2 1 "" 2 25 70 120 \
+"chain-id:" 3 1 "" 3 25 70 120 > tmp/qstaking.tmp \
 2>&1 >/dev/tty
-export DATAHASH=`sed -n 1p tmp/qoracle.tmp`
-export CHAIN=`sed -n 2p tmp/qoracle.tmp`
-dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle data $DATAHASH --chain-id $CHAIN)" 40 90
-rm -f tmp/qoracle.tmp
+export ADDRESS=`sed -n 1p tmp/qstaking.tmp`
+export VALIDATOR=`sed -n 2p tmp/qstaking.tmp`
+export CHAIN=`sed -n 3p tmp/qstaking.tmp`
+dialog --title "delegation query" --msgbox "$(docker exec -it node bandd query staking delegation $ADDRESS $VALIDATOR --chain-id $CHAIN --node http://34.77.171.169:26657)" 40 90
+rm -f tmp/qstaking.tmp
+echo "press enter to continue"
+read 
+}
+
+delegations() {
+mkdir tmp
+dialog --backtitle "Query delegations menu" --title "query delegations form" \
+--form "\npopulate query delegations form" 15 90 7 \
+"Delegator wallet address:" 1 1 "" 1 25 70 120  \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/qstaking.tmp \
+2>&1 >/dev/tty
+export ADDRESS=`sed -n 1p tmp/qstaking.tmp`
+export CHAIN=`sed -n 2p tmp/qstaking.tmp`
+dialog --title "delegations query" --msgbox "$(docker exec -it node bandd query staking delegations $ADDRESS --chain-id $CHAIN --node http://34.77.171.169:26657)" 40 90
+rm -f tmp/qstaking.tmp
 echo "press enter to continue"
 read
 }
 
-data-provider-reward() {
+delegations-to () {
+mkdir tmp
+dialog --backtitle "Query delegations-to menu" --title "query delegations-to form" \
+--form "\npopulate query delegations-to form" 15 90 7 \
+"Validator address:" 1 1 "" 1 25 70 120  \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/qstaking.tmp \
+2>&1 >/dev/tty
+export VALIDATOR=`sed -n 1p tmp/qstaking.tmp`
+export CHAIN=`sed -n 2p tmp/qstaking.tmp`
+dialog --title "delegations-to query" --msgbox "$(docker exec -it node bandd query staking delegations $VALIDATOR --chain-id $CHAIN --node http://34.77.171.169:26657)" 40 90
+rm -f tmp/qstaking.tmp
+echo "press enter to continue"
+read
+}
+
+historical-info() {
 # auth query menu
-dialog --title "query active oracle validators" --msgbox "$(docker exec -it node bandd query oracle data-provider-reward)" 40 90
-}
-
-data-providers-pool() {
-  # bank query menu
-dialog --title "query active oracle validators" --msgbox "$(docker exec -it node bandd query oracle data-providers-pool)" 40 90
-}
-
-data-source() {
-  # coinswap query menu
 mkdir tmp
-dialog --backtitle "ORACLE menu" --title "oracle validator form" \
---form "\npopulate oracle form" 15 90 7 \
-"Data source id:" 1 1 "" 1 25 70 120  \
-"chain-id:" 2 1 "" 2 25 70 120 > tmp/qoracle.tmp \
+dialog --backtitle "Query historical-info menu" --title "query historical-info form" \
+--form "\npopulate query historical-info form" 15 90 7 \
+"Height:" 1 1 "" 1 25 70 120  \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/qstaking.tmp \
 2>&1 >/dev/tty
-export DATASOURCEID=`sed -n 1p tmp/qoracle.tmp`
-export CHAIN=`sed -n 2p tmp/qoracle.tmp`
-dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle data-source $DATASOURCEID --chain-id $CHAIN)" 40 90
-rm -f tmp/qoracle.tmp
-echo "press enter to continue"
-read
-}
-
-data-sources() {
-  # distribution query menu
-mkdir tmp
-dialog --backtitle "ORACLE menu" --title "oracle validator form" \
---form "\npopulate oracle form" 15 90 7 \
-"Limit:" 1 1 "" 1 25 70 120  \
-"Offset:" 2 1 "" 2 25 70 120 \
-"chain-id:" 3 1 "" 3 25 70 120 > tmp/qoracle.tmp \
-2>&1 >/dev/tty
-export LIMIT=`sed -n 1p tmp/qoracle.tmp`
-export OFFSET=`sed -n 2p tmp/qoracle.tmp`
-export CHAIN=`sed -n 3p tmp/qoracle.tmp`
-dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle data-sources $LIMIT $OFFSET --chain-id $CHAIN)" 40 90
-rm -f tmp/qoracle.tmp
-echo "press enter to continue"
-read
-}
-
-oracle-script() {
-# evidence query menu
-mkdir tmp
-dialog --backtitle "ORACLE menu" --title "oracle validator form" \
---form "\npopulate oracle form" 15 90 7 \
-"script id:" 1 1 "" 1 25 70 120 \
-"chain-id:" 2 1 "" 2 25 70 120 > tmp/qoracle.tmp \
-2>&1 >/dev/tty
-export SCRIPTID=`sed -n 1p tmp/qoracle.tmp`
-export CHAIN=`sed -n 2p tmp/qoracle.tmp`
-dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle oracle-script $SCRIPTID --chain-id $CHAIN)" 40 90
-rm -f tmp/qoracle.tmp
-echo "press enter to continue"
-read
-}
-
-oracle-scripts() {
-  # gov query menu
-mkdir tmp
-dialog --backtitle "ORACLE menu" --title "oracle validator form" \
---form "\npopulate oracle form" 15 90 7 \
-"Limit:" 1 1 "" 1 25 70 120  \
-"Offset:" 2 1 "" 2 25 70 120 \
-"chain-id:" 3 1 "" 3 25 70 120 > tmp/qoracle.tmp \
-2>&1 >/dev/tty
-export LIMIT=`sed -n 1p tmp/qoracle.tmp`
-export OFFSET=`sed -n 2p tmp/qoracle.tmp`
-export CHAIN=`sed -n 3p tmp/qoracle.tmp`
-dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle oracle-scripts $LIMIT $OFFSET --chain-id $CHAIN)" 40 90
-rm -f tmp/qoracle.tmp
+export HEIGHT=`sed -n 1p tmp/qstaking.tmp`
+export CHAIN=`sed -n 2p tmp/qstaking.tmp`
+dialog --title "historical-info query" --msgbox "$(docker exec -it node bandd query staking historical-info $HEIGHT --chain-id $CHAIN --node http://34.77.171.169:26657)" 40 90
+rm -f tmp/qstaking.tmp
 echo "press enter to continue"
 read
 }
 
 params() {
-  # ibc query menu
-dialog --title "query active oracle validators" --msgbox "$(docker exec -it node bandd query oracle params)" 40 90 
+  # bank query menu
+dialog --title "query staking params" --msgbox "$(docker exec -it node bandd query staking params --node http://34.77.171.169:26657)" 40 90
 }
 
-reporters() {
-  # query mint menu
+pool() {
+  # coinswap query menu
+dialog --title "query staking params" --msgbox "$(docker exec -it node bandd query staking pool --node http://34.77.171.169:26657)" 40 90
+}
+
+redelegation() {
+  # distribution query menu
 mkdir tmp
-dialog --backtitle "ORACLE menu" --title "oracle validator form" \
---form "\npopulate oracle form" 15 90 7 \
-"Validator:" 1 1 "" 1 25 70 120  \
-"chain-id:" 2 1 "" 2 25 70 120 > tmp/qoracle.tmp \
+dialog --backtitle "Query redelegation menu" --title "query redelegation form" \
+--form "\npopulate query redelegation form" 15 90 7 \
+"Delegator wallet address:" 1 1 "" 1 25 70 120  \
+"source validator:" 2 1 "" 2 25 70 120 \
+"destination validator:" 3 1 "" 3 25 70 120 \
+"chain-id:" 4 1 "" 4 25 70 120 > tmp/qstaking.tmp \
 2>&1 >/dev/tty
-export VALIDATOR=`sed -n 1p tmp/qoracle.tmp`
-export CHAIN=`sed -n 2p tmp/qoracle.tmp`
-dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle reporters $VALIDATOR --chain-id $CHAIN)" 40 90
-rm -f tmp/qoracle.tmp
+export ADDRESS=`sed -n 1p tmp/qstaking.tmp`
+export SRCVALIDATOR=`sed -n 2p tmp/qstaking.tmp`
+export DSTVALIDATOR=`sed -n 3p tmp/qstaking.tmp`
+export CHAIN=`sed -n 4p tmp/qstaking.tmp`
+dialog --title "redelegation query" --msgbox "$(docker exec -it node bandd query staking redelegation $ADDRESS $SRCVALIDATOR $DSTVALIDATOR --chain-id $CHAIN --node http://34.77.171.169:26657)" 40 90
+rm -f tmp/qstaking.tmp
+echo "press enter to continue"
+read 
+}
+
+redelegations() {
+# evidence query menu
+mkdir tmp
+dialog --backtitle "Query redelegations menu" --title "query redelegations form" \
+--form "\npopulate query redelegations form" 15 90 7 \
+"Delegator wallet address:" 1 1 "" 1 25 70 120  \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/qstaking.tmp \
+2>&1 >/dev/tty
+export ADDRESS=`sed -n 1p tmp/qstaking.tmp`
+export CHAIN=`sed -n 2p tmp/qstaking.tmp`
+dialog --title "redelegations query" --msgbox "$(docker exec -it node bandd query staking redelegations $ADDRESS --chain-id $CHAIN --node http://34.77.171.169:26657)" 40 90
+rm -f tmp/qstaking.tmp
 echo "press enter to continue"
 read
 }
 
-request() {
+redelegations-from() {
+  # gov query menu
+mkdir tmp
+dialog --backtitle "Query redelegations-from menu" --title "query redelegations-from form" \
+--form "\npopulate query redelegations-from form" 15 90 7 \
+"Validator address:" 1 1 "" 1 25 70 120  \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/qstaking.tmp \
+2>&1 >/dev/tty
+export VALIDATOR=`sed -n 1p tmp/qstaking.tmp`
+export CHAIN=`sed -n 2p tmp/qstaking.tmp`
+dialog --title "redelegations-from query" --msgbox "$(docker exec -it node bandd query staking redelegations-from $VALIDATOR --chain-id $CHAIN --node http://34.77.171.169:26657)" 40 90
+rm -f tmp/qstaking.tmp
+echo "press enter to continue"
+read
+}
+
+unbonding-delegation() {
+  # ibc query menu
+mkdir tmp
+dialog --backtitle "Query unbonding-delegation menu" --title "query unbonding-delegation form" \
+--form "\npopulate query unbonding-delegation form" 15 90 7 \
+"Delegator wallet address:" 1 1 "" 1 25 70 120  \
+"Validator:" 2 1 "" 2 25 70 120 \
+"chain-id:" 3 1 "" 3 25 70 120 > tmp/qstaking.tmp \
+2>&1 >/dev/tty
+export ADDRESS=`sed -n 1p tmp/qstaking.tmp`
+export VALIDATOR=`sed -n 2p tmp/qstaking.tmp`
+export CHAIN=`sed -n 3p tmp/qstaking.tmp`
+dialog --title "unbonding-delegation query" --msgbox "$(docker exec -it node bandd query staking unbonding-delegation $ADDRESS $VALIDATOR --chain-id $CHAIN --node http://34.77.171.169:26657)" 40 90
+rm -f tmp/qstaking.tmp
+echo "press enter to continue"
+read 
+}
+
+unbonding-delegations() {
 # oracle query menu
 mkdir tmp
-dialog --backtitle "ORACLE menu" --title "oracle validator form" \
---form "\npopulate oracle form" 15 90 7 \
-"Request id:" 1 1 "" 1 25 70 120  \
-"chain-id:" 2 1 "" 2 25 70 120 > tmp/qoracle.tmp \
+dialog --backtitle "Query unbonding-delegations menu" --title "query unbonding-delegations form" \
+--form "\npopulate query unbonding-delegations form" 15 90 7 \
+"Delegator wallet address:" 1 1 "" 1 25 70 120  \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/qstaking.tmp \
 2>&1 >/dev/tty
-export REQUESTID=`sed -n 1p tmp/qoracle.tmp`
-export CHAIN=`sed -n 2p tmp/qoracle.tmp`
-dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle request $REQUESTID --chain-id $CHAIN)" 40 90
-rm -f tmp/qoracle.tmp
+export ADDRESS=`sed -n 1p tmp/qstaking.tmp`
+export CHAIN=`sed -n 2p tmp/qstaking.tmp`
+dialog --title "unbonding-delegations query" --msgbox "$(docker exec -it node bandd query staking unbonding-delegations $ADDRESS --chain-id $CHAIN --node http://34.77.171.169:26657)" 40 90
+rm -f tmp/qstaking.tmp
 echo "press enter to continue"
 read
 }
 
-request-price() {
+unbonding-delegations-from() {
 # query params menu
-. query/qparams.sh
-}
-
-request-reports() {
-#slashing query menu
 mkdir tmp
-dialog --backtitle "ORACLE menu" --title "oracle validator form" \
---form "\npopulate oracle form" 15 90 7 \
-"Limit:" 1 1 "" 1 25 70 120  \
-"Offset:" 2 1 "" 2 25 70 120 \
-"Request id:" 3 1 "" 3 25 70 120 \
-"chain-id:" 4 1 "" 4 25 70 120 > tmp/qoracle.tmp \
+dialog --backtitle "Query unbonding-delegations-from menu" --title "query unbonding-delegations-from form" \
+--form "\npopulate query unbonding-delegations-from form" 15 90 7 \
+"Validator address:" 1 1 "" 1 25 70 120  \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/qstaking.tmp \
 2>&1 >/dev/tty
-export LIMIT=`sed -n 1p tmp/qoracle.tmp`
-export OFFSET=`sed -n 2p tmp/qoracle.tmp`
-export REQUESTID=`sed -n 3p tmp/qoracle.tmp`
-export CHAIN=`sed -n 4p tmp/qoracle.tmp`
-dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle request-reports $REQUESTID $LIMIT $OFFSET --chain-id $CHAIN)" 40 90
-rm -f tmp/qoracle.tmp
-echo "press enter to continue"
-read
-}
-
-request-search() {
-# staking query menu
-mkdir tmp
-dialog --backtitle "ORACLE menu" --title "oracle validator form" \
---form "\npopulate oracle form" 15 90 7 \
-"Data source id:" 1 1 "" 1 25 70 120  \
-"chain-id:" 2 1 "" 2 25 70 120 > tmp/qoracle.tmp \
-2>&1 >/dev/tty
-export ORACLESCRIPTID=`sed -n 1p tmp/qoracle.tmp`
-export CHAIN=`sed -n 2p tmp/qoracle.tmp`
-dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle request-search -s $ORACLESCRIPTID --chain-id $CHAIN)" 40 90
-rm -f tmp/qoracle.tmp
-echo "press enter to continue"
-read
-}
-
-requests() {
-# telemetry query menu
-mkdir tmp
-dialog --backtitle "ORACLE menu" --title "oracle validator form" \
---form "\npopulate oracle form" 15 90 7 \
-"Limit:" 1 1 "" 1 25 70 120  \
-"Offset:" 2 1 "" 2 25 70 120 \
-"chain-id:" 3 1 "" 3 25 70 120 > tmp/qoracle.tmp \
-2>&1 >/dev/tty
-export LIMIT=`sed -n 1p tmp/qoracle.tmp`
-export OFFSET=`sed -n 2p tmp/qoracle.tmp`
-export CHAIN=`sed -n 3p tmp/qoracle.tmp`
-dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query oracle requests  $LIMIT $OFFSET --chain-id $CHAIN)" 40 90
-rm -f tmp/qoracle.tmp
+export VALIDATOR=`sed -n 1p tmp/qstaking.tmp`
+export CHAIN=`sed -n 2p tmp/qstaking.tmp`
+dialog --title "unbonding-delegations-from query" --msgbox "$(docker exec -it node bandd query staking unbonding-delegations-from $VALIDATOR --chain-id $CHAIN --node http://34.77.171.169:26657)" 40 90
+rm -f tmp/qstaking.tmp
 echo "press enter to continue"
 read
 }
 
 validator() {
-# tendermint-validator-set query menu
+#slashing query menu
 mkdir tmp
-dialog --backtitle "ORACLE menu" --title "oracle validator form" \
---form "\npopulate oracle form" 15 90 7 \
-"Validator addeess:" 1 1 "" 1 25 70 120  \
-"chain-id:" 2 1 "" 2 25 70 120 > tmp/qoracle.tmp \
+dialog --backtitle "Query staking validator menu" --title "query staking validator form" \
+--form "\npopulate query unbonding-delegations-from form" 15 90 7 \
+"Validator address:" 1 1 "" 1 25 70 120  \
+"chain-id:" 2 1 "" 2 25 70 120 > tmp/qstaking.tmp \
 2>&1 >/dev/tty
-export VALIDATOR=`sed -n 1p tmp/qoracle.tmp`
-export CHAIN=`sed -n 2p tmp/qoracle.tmp`
-dialog --title "oracle validator query" --msgbox "$(docker exec -it node bandd query account  $ADDRESS --chain-id $CHAIN)" 40 90
-rm -f tmp/qoracle.tmp
+export VALIDATOR=`sed -n 1p tmp/qstaking.tmp`
+export CHAIN=`sed -n 2p tmp/qstaking.tmp`
+dialog --title "staking validator query" --msgbox "$(docker exec -it node bandd query staking validator $VALIDATOR --chain-id $CHAIN --node http://34.77.171.169:26657)" 40 90
+rm -f tmp/qstaking.tmp
 echo "press enter to continue"
 read
 }
 
+validators() {
+# staking query menu
+dialog --title "query staking validators" --msgbox "$(docker exec -it node bandd query staking validators --node http://34.77.171.169:26657)" 40 90
+}
+ 
 #section1
 
 ###############
@@ -234,25 +217,21 @@ TITLE="Query Oracle Menu"
 MENU="Choose one of the following options:"
 
 OPTIONS=(
-1 "active-validators"
-2 "counts"
-3 "data"
-4 "data-provider-reward"
-5 "data-providers-pool"
-6 "data-source"
-7 "data-sources"
-8 "oracle-script"
-9 "oracle-scripts"
-10 "params"
-11 "reporters"
-12 "request"
-13 "request-price"
-14 "request-reports"
-15 "request-search"
-16 "requests"
-17 "validator"
+1 "delegation"
+2 "delegations"
+3 "delegations-to"
+4 "historical-info"
+5 "params"
+6 "pool "
+7 "redelegation"
+8 "redelegations"
+9 "redelegations-from"
+10 "unbonding-delegation"
+11 "unbonding-delegations"
+12 "unbonding-delegations-from"
+13 "validator"
+14 "validators"
 #section2
-99 "Add device to menu"
 0 "Go Back to Main"
 )
 
@@ -395,33 +374,6 @@ case $CHOICE in
   clear
   BEGIN=$(date +%s)
   request-reports
-  END=$(date +%s)
-  clear
-;;
-#############################################################
-15 )
-  # Motorola edge s codename nio
-  clear
-  BEGIN=$(date +%s)
-  request-search
-  END=$(date +%s)
-  clear
-;;
-##############################################################
-16 )
-  # Motorola G8 power codename sofiaR
-  clear
-  BEGIN=$(date +%s)
-  requests
-  END=$(date +%s)
-  clear
-;;
-##########################################################
-17 )
-  # samsung beyond2qlte build menu
-  clear
-  BEGIN=$(date +%s)
-  validator
   END=$(date +%s)
   clear
 ;;
