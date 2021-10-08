@@ -4,7 +4,7 @@ sudo apt update
 sudo apt install docker docker-compose
 export MYUSER=$(whoami)
 sudo usermod -aG docker $MYUSER
-newgrp docker << END
+exec sg docker newgrp `id -gn`
 git clone https://github.com/GeoDB-limited/odin-testnet-public-tools
 cd odin-testnet-public-tools/node
 rm -rf config/node_key.json config/priv_validator_key.json
@@ -27,5 +27,3 @@ odin status
 echo "your node is started, and ports have been forwarded.  press enter to continue"
 read
 ./ragnarok.sh
-
-END
