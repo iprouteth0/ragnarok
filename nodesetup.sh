@@ -1,30 +1,111 @@
-#! /bin/bash
+#!/bin/sh
+VERSION=${VERSION:-v0.1.0}
+NODENAME=${1:-"$(hostname)"}
+USER=odin
+P_HOME=/home/odin
+ODIN_DIR=$P_HOME/.odin
+CHAIN="odin-mainnet-freya"
+GENESIS_HASH="29d248a3852038b06879031d557e2cbc1e17f6fdb1c9ac00e3c52ea9ee03ed8a"
 
-sudo apt update
-sudo apt install docker docker-compose
-export MYUSER=$(whoami)
-sudo usermod -aG docker $MYUSER
-newgrp docker << END
-git clone https://github.com/GeoDB-limited/odin-testnet-public-tools
-cd odin-testnet-public-tools/node
-rm -rf config/node_key.json config/priv_validator_key.json
-./start.sh
-sleep 15
-./export.sh
-mkdir ~/odin/
-cp -R config/ ~/odin/
-sudo iptables-save > ~/initial_iptables_backup.txt
-export IPADDRESS=$(docker inspect node | grep IPAddress | grep 172 | cut -d"\"" -f4)
-export SOCKET="$(docker inspect node | grep IPAddress | grep 172 | cut -d"\"" -f4):26656"
-export SOCKET2="$(docker inspect node | grep IPAddress | grep 172 | cut -d"\"" -f4):26657"
-sudo iptables -t nat -A DOCKER -p tcp --dport 26656 -j DNAT --to-destination $SOCKET && sudo iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source $IPADDRESS --destination 26656 && sudo iptables -A DOCKER -j ACCEPT -p tcp --destination $IPADDRESS --dport 26656
-sudo iptables -t nat -A DOCKER -p tcp --dport 26657 -j DNAT --to-destination $SOCKET2 && sudo iptables -t nat -A POSTROUTING -j MASQUERADE -p tcp --source $IPADDRESS --destination 26657 && sudo iptables -A DOCKER -j ACCEPT -p tcp --destination $IPADDRESS --dport 26657
-sudo iptables-save > ~/26656_26657_opened.txt
-cd ../..
-sleep 20
-echo "alias odin='docker exec -it node bandd'" >> ~/.bashrc && alias odin='docker exec -it node bandd'
-odin status
-echo "your node is started, and ports have been forwarded.  press enter to continue"
-read
-./ragnarok.sh
-END
+echo "-----------------------------------------------------------------------------------"
+echo "HELLO THERE! This is one-liner script to install and run your Odin Protocol node"
+echo "-----------------------------------------------------------------------------------"
+echo
+
+# Check for ubuntu 20.04
+grep -q 'DISTRIB_CODENAME=focal' /etc/lsb-release 2>&1 > /dev/null
+if [ $? -ne 0 ]; then
+  echo "ERROR! You should run this script on Ubuntu 20.04!"
+fi;
+
+if [ "x$NODENAME" == "x" ]; then
+ NODENAME=`hostname`
+fi
+
+# Install depencies if needed
+(which sudo && which curl && which wget && which tar ) > /dev/null || \
+	(apt update && apt install -y curl wget tar sudo)
+
+echo "1. Creating user $USER"
+useradd -mU $USER || true
+
+#apt update
+#apt upgrade -y
+#apt install -y curl
+echo 2. Downloading BINARY file to /usr/local/bin/odind
+for file in odind yoda; do
+	rm -f /usr/local/bin/${file}.bak
+	mv -f /usr/local/bin/${file} /usr/bin/${file}.bak
+	curl -sL https://mercury-nodes.net/odin/${file}-$VERSION -o /usr/local/bin/$file
+	chmod +x /usr/local/bin/${file}
+done
+curl -sL https://mercury-nodes.net/odin/libgo_owasm.so -o /usr/lib/libgo_owasm.so
+
+
+if [ ! -d $P_HOME/.odin ]; then
+	echo "Initialize your fresh ODIN instalation"
+	echo "Your node name is: $NODENAME"
+	echo ---------------------------------
+	echo
+
+	sudo -u $USER /usr/local/bin/odind init $NODENAME --chain-id $CHAIN
+	echo Downloading GENESIS file
+	sudo -u $USER curl -sL https://raw.githubusercontent.com/ODIN-PROTOCOL/networks/master/mainnets/odin-mainnet-freya/final_genesis.json -o $ODIN_DIR/config/genesis.json
+	echo "$GENESIS_HASH $ODIN_DIR/config/genesis.json" | sha256sum -c
+	echo RESET Odin data
+	sudo -u $USER /usr/local/bin/odind unsafe-reset-all
+	sudo -u $USER /usr/local/bin/odind unsafe-reset-all
+
+	#echo Set default chain-id to $CHAIN
+	#/usr/local/bin/odind config chain-id $CHAIN
+
+	echo "Validate genesis"
+	sudo -u $USER /usr/local/bin/odind validate-genesis || exit
+
+	echo Adding seeds
+	SEEDS=`curl -sL https://raw.githubusercontent.com/ODIN-PROTOCOL/networks/master/mainnets/odin-mainnet-freya/seeds.txt | awk '{print $1}' | paste -s -d, -`
+	sudo -u $USER sed -i.bak -e "s/^seeds =.*/seeds = \"$SEEDS\"/" $ODIN_DIR/config/config.toml
+	echo Adding 15 RANDOM persistent peers
+	PEERS=`curl -sL  https://raw.githubusercontent.com/ODIN-PROTOCOL/networks/master/mainnets/odin-mainnet-freya/peers.txt | grep -o "^[0-9a-f@,.:].*" | sort -R | head -n 15 | awk '{print $1}' | paste -s -d, -`
+	sudo -u $USER sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $ODIN_DIR/config/config.toml
+
+	echo Set minimal-gas-prices to 0.0125loki
+	sudo -u $USER sed -i.bak 's/^minimum-gas-prices *=.*$/minimum-gas-prices = "0.0125loki"/' $ODIN_DIR/config/app.toml
+fi
+
+
+#echo Change max inbound and outbound peers in config
+#sudo -u $USER sed -i 's/^max_num_inbound_peers =.*/max_num_inbound_peers = 80/' $ODIN_DIR/config/config.toml
+#sudo -u $USER sed -i 's/^max_num_outbound_peers =.*/max_num_outbound_peers = 20/' $ODIN_DIR/config/config.toml
+
+
+[ -f /etc/systemd/system/odind.service ] || cat > /etc/systemd/system/odind.service << EOF
+[Unit]
+Description=Odin Node
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=$USER
+WorkDir=$P_HOME
+ExecStart=/usr/local/bin/odind start
+Restart=always
+RestartSec=3
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl enable odind
+systemctl restart odind
+echo -n Starting node 5 sec .
+for i in 1 2 3 4; do sleep 1; echo -n '.'; done; echo 
+systemctl status odind
+
+echo "-----------------------------------------------------------------------------------"
+echo "DONE!"
+echo 
+echo "Best Regards! Mercury nodes team"
+echo "-----------------------------------------------------------------------------------"
