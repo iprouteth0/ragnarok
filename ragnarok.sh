@@ -109,7 +109,7 @@ odind tx staking create-validator \
 --pubkey $(odind tendermint show-validator) \ 
 --moniker $MONIKER \ 
 --chain-id $CHAIN \ 
---fees 2000loki \
+--fees 2500loki \
 --from <key-name>
 sleep 5
 exit
