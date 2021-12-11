@@ -110,7 +110,7 @@ odind tx staking create-validator \
 --moniker $MONIKER \ 
 --chain-id $CHAIN \ 
 --fees 2500loki \
---from <key-name>
+--from $ADDRESS
 sleep 5
 exit
 echo "press enter to continue"
