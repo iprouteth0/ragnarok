@@ -13,7 +13,7 @@ export ADDRESS=`sed -n 1p tmp/unjail.tmp`
 export VALIDATOR=`sed -n 2p tmp/unjail.tmp`
 export CHAIN=`sed -n 3p tmp/unjail.tmp`
 
-docker exec -it node bandd tx slashing unjail $VALIDATOR --from $ADDRESS --chain-id $CHAIN --gas auto
+odind tx slashing unjail $VALIDATOR --from $ADDRESS --chain-id $CHAIN --gas auto
 echo "press enter to continue"
 read
 # remove temporary file created
