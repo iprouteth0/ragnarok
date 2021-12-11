@@ -17,7 +17,7 @@ export AMOUNT=`sed -n 3p tmp/sendmenu.tmp`
 export MEMO=`sed -n 4p tmp/sendmenu.tmp`
 export CHAIN=`sed -n 5p tmp/sendmenu.tmp`
 
-docker exec -it node bandd tx bank send $FROMADDRESS $TOADDRESS $AMOUNT --memo $MEMO --gas auto --chain-id $CHAIN --node http://34.77.171.169:26657
+odind tx bank send $FROMADDRESS $TOADDRESS $AMOUNT --memo $MEMO --gas auto --chain-id $CHAIN --fees=2500loki
 echo "press enter to continue"
 read
 
