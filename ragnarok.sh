@@ -11,7 +11,7 @@
 #functions
 status() {
   # ginna Build menu
-dialog --title "bandd status" --msgbox "$(docker exec -it node bandd status)" 40 90
+dialog --title "odind status" --msgbox "$(odind status)" 40 90
 
 }
 
@@ -36,7 +36,7 @@ dialog --backtitle "Balances query menu" --title "Balances query form" \
 # declare variables as inputs
 export ADDRESS=`sed -n 1p tmp/balances.tmp`
 export CHAIN=`sed -n 2p tmp/balances.tmp`
-docker exec -it node bandd query bank balances $ADDRESS --chain-id $CHAIN --node http://34.77.171.169:26657
+odind query bank balances $ADDRESS --chain-id $CHAIN --node http://34.77.171.169:26657
 echo "press enter to continue"
 read
 # remove temporary file created
@@ -61,8 +61,8 @@ votemenu.sh
 
 unjail() { 
 # unjail
-#dialog --title "unjail" --msgbox "$(docker exec -it node bandd tx slashing unjail --from $(bandd keys show $ADDRESS --bech val -a) --chain-id $CHAIN --node http://34.77.171.169:26657 )" 40 90
-#docker exec -it node "bandd tx slashing unjail --from $(docker exec -it node bandd keys show $ADDRESS --bech val -a) --chain-id $CHAIN --node http://34.77.171.169:26657"
+#dialog --title "unjail" --msgbox "$(odind tx slashing unjail --from $(bandd keys show $ADDRESS --bech val -a) --chain-id $CHAIN )" 40 90
+#odind tx slashing unjail --from $(odind keys show $ADDRESS --bech val -a) --chain-id $CHAIN "
 #read
 . unjail.sh
 }
@@ -99,7 +99,18 @@ export MONIKER=`sed -n 2p tmp/validator.tmp`
 export STAKE=`sed -n 3p tmp/validator.tmp`
 export CHAIN=`sed -n 4p tmp/validator.tmp`
 export SHOWVALIDATOR=$(docker exec -it node bandd tendermint show-validator)
-docker exec -e STAKE=$STAKE -e ADDRESS=$ADDRESS -e MONIKER=$MONIKER -e CHAIN=$CHAIN -it node bandd tx staking create-validator --amount $STAKE --commission-max-change-rate 0.01 --commission-max-rate 0.2 --commission-rate 0.1 --from $ADDRESS --min-self-delegation 1 --moniker $MONIKER --pubkey $SHOWVALIDATOR --chain-id $CHAIN --node http://34.77.171.169:26657
+odind tx staking create-validator \ 
+--amount 1000000loki \ 
+--commission-max-change-rate "0.05" \ 
+--commission-max-rate "0.10" \ 
+--commission-rate "0.05" \ 
+--min-self-delegation "1" \ 
+--details "validators write bios too" \ 
+--pubkey $(odind tendermint show-validator) \ 
+--moniker $MONIKER \ 
+--chain-id $CHAIN \ 
+--fees 2000loki \
+--from <key-name>
 sleep 5
 exit
 echo "press enter to continue"
