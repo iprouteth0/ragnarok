@@ -15,7 +15,7 @@ export VALIDATOR=`sed -n 2p tmp/undelegate.tmp`
 export AMOUNT=`sed -n 3p tmp/undelegate.tmp`
 export CHAIN=`sed -n 4p tmp/undelegate.tmp`
 
-docker exec -it node bandd tx staking unbond $VALIDATOR $AMOUNT --from $ADDRESS --chain-id $CHAIN --gas auto
+odind tx staking unbond $VALIDATOR $AMOUNT --from $ADDRESS --chain-id $CHAIN --gas auto
 echo "press enter to continue"
 read
 # remove temporary file created
