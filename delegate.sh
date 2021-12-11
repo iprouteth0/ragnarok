@@ -15,7 +15,7 @@ export VALIDATOR=`sed -n 2p tmp/delegate.tmp`
 export AMOUNT=`sed -n 3p tmp/delegate.tmp`
 export CHAIN=`sed -n 4p tmp/delegate.tmp`
 
-docker exec -it node bandd tx staking delegate $VALIDATOR $AMOUNT --from $ADDRESS --chain-id $CHAIN --gas auto
+odind tx staking delegate $VALIDATOR $AMOUNT --from $ADDRESS --chain-id $CHAIN --gas auto
 echo "press enter to continue"
 read
 
